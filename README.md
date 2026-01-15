@@ -1,0 +1,1 @@
+University project focused on implementing a genetic algorithm to solve a given optimization problem.
