@@ -22,6 +22,11 @@ class Population:
         return average_fitness
 
 
+    def sortFittest(self, n): #sortuje osobniki wzgledem, wartosci funckji, (przydaje sie do elitarnej selekcji) zwraca top n wynikow
+        self.chromosomes.sort(key=lambda x:x.evaluation())
+        return self.chromosomes[:n]
+        
+        
 
     def show_population(self): #pokazuje populacje
         for i, c in enumerate(self.chromosomes):
