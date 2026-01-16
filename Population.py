@@ -1,7 +1,7 @@
 from Chromosome import Chromosome
 
 class Population:
-    """Populacja początkowa, S(0), składającego sie z k osobników (poplationSize)"""
+    """Populacja początkowa, S(0), składająca sie z k osobników (poplationSize)"""
     def __init__(self, populationSize, chromosomeSize):
     
         self.chromosomes = list() #lsta wszystkich osobnikow
@@ -12,7 +12,11 @@ class Population:
             self.chromosomes.append(chromosome)
 
 
-    def evaluationForALL(self): #liczy wartosc funckje dla calej populacji
+    def evaluationForALL(self):
+        """liczy wartosc funckji dla calej populacji"""
+
+        total_fitness = 0
+
         for chromosome in self.chromosomes:
             current_fitness = chromosome.evaluation()
             total_fitness += current_fitness
@@ -22,9 +26,9 @@ class Population:
         return average_fitness
 
 
-    def sortFittest(self, n): #sortuje osobniki wzgledem, wartosci funckji, (przydaje sie do elitarnej selekcji) zwraca top n wynikow
-        self.chromosomes.sort(key=lambda x:x.evaluation())
-        return self.chromosomes[:n]
+    def sortFittest(self): 
+        """sortuje osobniki wzgledem, wartosci funckji, (przydaje sie do elitarnej selekcji) zwraca top n wynikow"""
+        self.chromosomes.sort(key=lambda x:x.evaluation(), reverse=True)
         
         
 
