@@ -1,11 +1,8 @@
-from Population import Population
+from GeneticAlgoritm import GeneticAlgoritm
 
-chromosomeSize = 3
-populationSize = 10
-
+algorytm = GeneticAlgoritm(populationSize=100, chromosomeSize=10, elitismSize=40, epsilon=0.001)
 
 
-    
+najlepszy = algorytm.run(epsilon=0.001, maxGenerations=1000)
 
-population = Population(10, 5)
-population.show_population()
+print(najlepszy)
