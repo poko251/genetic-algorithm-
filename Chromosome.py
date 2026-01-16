@@ -40,7 +40,7 @@ class Chromosome:
 
     def evaluation(self):
         """Metoda która oblicza wartosc funkcji dla danego osobnika
-        funckja: 4x^2+7x+1
+        funckja: -x^2+2x+10
         """
 
         return  -1* (self.value**2) - 2 * self.value + 10
