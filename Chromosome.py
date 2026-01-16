@@ -2,10 +2,12 @@ import random
 
 class Chromosome:
 
-    """1. KODOWANIE: Zastosowałem kadoowanie binarne, każdego osobnika reprezentuje wektor zer oraz jedynek o długości parametru "chromosomeSize".
+    """0. KODOWANIE: Zastosowałem kadoowanie binarne, każdego osobnika reprezentuje wektor zer oraz jedynek o długości parametru "chromosomeSize".
+
     Gdzie ostatni gen: znak (0 = dodatnia, 1 = ujemna), a reszta odpowiada za liczbę naturalną.
-    2. Wybór popoulacji początkowej: Wybrałem metodę losowania wartosći ze zbioru {0,1}
-    3. Ocena osobników to wartosć funkcji dla danej zmiennej x
+    1. Wybór popoulacji początkowej: Wybrałem metodę losowania wartosći ze zbioru {0,1}
+
+    2. Ocena osobników to wartosć funkcji dla danej zmiennej x
     """
 
     def __init__(self, chromosomeSize):
@@ -41,7 +43,8 @@ class Chromosome:
         funckja: 4x^2+7x+1
         """
 
-        return 4 * self.value**2 +7 * self.value + 1
+        return  -1* (self.value**2) - 2 * self.value + 10
+
 
 
     def __str__(self):
