@@ -7,7 +7,7 @@ class GeneticAlgoritm:
     """
     3. Warunek stopu: Ocena czy biezaca populacji niewystarczająco rozni sie od poprzedniej populacji - prog to epsilon
 
-    4. Selekcja: Wybrałem metode (kola) ruletki oraz elitarna
+    4. Selekcja: Wybrałem metode rankingowa oraz elitarna
 
     5. Krzyżowanie: Wybralem krzyzowanie jednopuntkowe
 
@@ -29,31 +29,34 @@ class GeneticAlgoritm:
         #zwraca liste najelszych osobnikow
         return population.chromosomes[:self.elitismSize]
 
+    def rankingSelection(self, population, q=2):
 
-    def rouletteSelection(self, population, count): #selekcja ruletki
-        total_fitness = 0
-        for chromosome in population.chromosomes: #licze sume wszyskich wartosci funckji
-            total_fitness += chromosome.fitness
-
-        selected = list()
-
-        for _ in range(count):
-            #liczba d z przedzialu 0,1
-            d = random.uniform(0, 1)
-            cumulative_sum = 0
+            #sortowanie
+            population.sortFittest()
+            k = self.populationSize
+            sorted_chromosomes = population.chromosomes
             
-            for chromosome in population.chromosomes:
-                #przedział p_i dla osobnika 
-                probability = chromosome.fitness / total_fitness
-                cumulative_sum += probability
+            selected_pool = []
+            
+            
+            remaining_count = k - q #liczba osobników, którzy nie zostali odrzuceni
+            
+            # licze g(i) tak, aby suma wynosiła k
+            for i in range(remaining_count):
+                #obliczamy ile kopii przypada na osobnika na pozycji i
+                copies = int(round((2 * (remaining_count - i)) / remaining_count))
                 
-                #jeśli wylosowana wartość d wpadnie w przedział osobnika 
-                if d <= cumulative_sum:
-                    # Dodajemy osobnika
-                    selected.append(chromosome)
-                    break
-        return selected
-        
+                #dodajemy kopie osobnika do puli
+                for _ in range(copies):
+                    if len(selected_pool) < k:
+                        selected_pool.append(sorted_chromosomes[i])
+            
+            #jeśli przez zaokrąglenia brakuje osobników do k, uzupełniamy najlepszymi
+            while len(selected_pool) < k:
+                selected_pool.append(sorted_chromosomes[0])
+                
+            return selected_pool
+            
 
     def crossOver(self, parent1, parent2, crossoverRate=0.5): #krzyzowanie jednopunkowe
 
@@ -129,6 +132,9 @@ class GeneticAlgoritm:
                     break
             prev_avg_fitness = current_avg_fitness
 
+
+            selection_pool = self.rankingSelection(current_population, q=2)
+
             #nowe pokolenie
             new_chromosomes = list()
 
@@ -137,13 +143,13 @@ class GeneticAlgoritm:
             elite = self.eltisimSelection(current_population)
             new_chromosomes.extend(elite)
 
-            # selekcja ruletkowa i krzyzowanie
+            # selekcja rankingowa i krzyzowanie
 
             while len(new_chromosomes) < self.populationSize:
 
-                #selekcja ruletkowa
+                #selekcja rankingowa
 
-                parents = self.rouletteSelection(current_population, 2)
+                parents = random.sample(selection_pool, 2)
 
                 #krzyzowanie 
 
@@ -165,7 +171,7 @@ class GeneticAlgoritm:
             current_population.evaluationForALL()
             current_population.sortFittest()
 
-        return current_population.chromosomes[0]
+        return current_population.chromosomes[0].value
             
 
 
